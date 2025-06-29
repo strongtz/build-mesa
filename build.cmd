@@ -316,6 +316,7 @@ meson setup ^
   -Dvideo-codecs= ^
   -Dgallium-drivers=llvmpipe ^
   -Dvulkan-drivers=swrast ^
+  -Dvulkan-layers=device-select,intel-nullhw,overlay,screenshot,vram-report-limit ^
   -Degl=disabled ^
   -Dgles1=disabled ^
   -Dgles2=disabled ^
@@ -381,6 +382,13 @@ if "%GITHUB_WORKFLOW%" neq "" (
   pushd archive-llvmpipe
   copy /y ..\mesa-llvmpipe-%MESA_ARCH%\bin\opengl32.dll .
   %SZIP% a -mx=9 ..\mesa-llvmpipe-%MESA_ARCH%-%MESA_VERSION%.zip 
+  popd
+
+  mkdir archive-llvmpipe-layers-all
+  pushd archive-llvmpipe-layers-all
+  rem copy everything under ..\mesa-llvmpipe-%MESA_ARCH%
+  xcopy /e /i /y ..\mesa-llvmpipe-%MESA_ARCH%\* .
+  %SZIP% a -mx=9 ..\mesa-llvmpipe-%MESA_ARCH%-%MESA_VERSION%-layers-all.zip
   popd
 
   mkdir archive-lavapipe
